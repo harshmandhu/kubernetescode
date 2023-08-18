@@ -6,7 +6,10 @@ node {
 
         checkout scm
     }
-
+    environment {
+        DOCKERHUB = credentials('docker-cred')
+    }
+        
     stage('Build image') {
   
        app = docker.build("harshmandhu/test")
@@ -23,7 +26,7 @@ node {
     stage('Push image') {
         
         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-            app.push("${docker-cred}")
+            app.push("${DOCKERHUB}")
         }
     }
     
